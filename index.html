@@ -62,7 +62,7 @@ nav a:hover{color:#00ff64;text-shadow:0 0 10px #00ff64;}
 }
 .hero-content{
   position:relative;
-  z-index:5; /* FIX: ensures button is clickable */
+  z-index:5;
   text-align:center;
   padding:20px;
   animation:fadeIn 1.5s ease;
@@ -75,10 +75,10 @@ nav a:hover{color:#00ff64;text-shadow:0 0 10px #00ff64;}
 .hero p{
   margin:15px 0;
   font-size:1.2rem;
-  opacity:0.9; 
+  opacity:0.9;
 }
 
-/* CTA Button */
+/* HERO BUTTON */
 .btn{
   margin-top:10px;
   background:linear-gradient(90deg,#00ff64,#009944);
@@ -92,7 +92,7 @@ nav a:hover{color:#00ff64;text-shadow:0 0 10px #00ff64;}
   box-shadow:0 0 20px #00ff64;
   transition:0.3s;
   position:relative;
-  z-index:20; /* FIX: ensures it's on top of ALL elements */
+  z-index:20;
 }
 .btn:hover{
   transform:scale(1.05);
@@ -130,8 +130,6 @@ h2{
   justify-content:center;
   font-size:1.1rem;
   color:#00ff64;
-  text-transform:uppercase;
-  letter-spacing:1px;
   opacity:0.7;
   transition:.3s;
 }
@@ -162,7 +160,7 @@ footer{
   border-radius:12px;
   box-shadow:0 0 25px rgba(0,255,100,0.4);
   overflow:hidden;
-  z-index:900; /* FIX: below hero/button */
+  z-index:900;
   transition:0.3s ease;
 }
 .chat-widget.minimized{
@@ -171,26 +169,6 @@ footer{
   cursor:pointer;
   overflow:hidden;
 }
-.chat-widget.minimized .chat-body,
-.chat-widget.minimized .chat-input{
-  display:none;
-}
-
-/* Attention Animations */
-@keyframes attention{
-  0%{transform:translateX(0);}
-  20%{transform:translateX(-3px);}
-  40%{transform:translateX(3px);}
-}
-@keyframes glow{
-  0%{box-shadow:0 0 10px #00ff64;}
-  50%{box-shadow:0 0 25px #00ff64;}
-  100%{box-shadow:0 0 10px #00ff64;}
-}
-.chat-widget.attention{
-  animation:attention .4s ease, glow 2s infinite ease;
-}
-
 .chat-header{
   background:#00ff64;
   color:#000;
@@ -211,7 +189,32 @@ footer{
   border-radius:5px;
 }
 
-.chat-body{height:250px;overflow-y:auto;padding:12px;}
+/* Chat body */
+.chat-body{
+  height:250px;
+  overflow-y:auto;
+  padding:12px;
+}
+
+/* Chat CTA Button */
+.chat-cta{
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 15px;
+  background:#00ff64;
+  color:#000;
+  font-weight:700;
+  border-radius:8px;
+  cursor:pointer;
+  text-align:center;
+  box-shadow:0 0 12px #00ff64;
+  transition:0.3s;
+}
+.chat-cta:hover{
+  background:#00cc50;
+  box-shadow:0 0 18px #00ff64;
+}
+
 .chat-input{display:flex;}
 .chat-input input{
   flex:1;
@@ -228,20 +231,30 @@ footer{
   font-weight:600;
 }
 
-/* Fade in */
+/* Fade */
 @keyframes fadeIn{
   from{opacity:0;transform:translateY(20px);}
   to{opacity:1;transform:translateY(0);}
 }
 
-/* MOBILE */
+/* MOBILE NAV */
 @media(max-width:768px){
-  nav{display:none;flex-direction:column;background:#000;position:absolute;top:60px;right:0;width:200px;padding:20px;}
+  nav{
+    display:none;
+    flex-direction:column;
+    background:#000;
+    position:absolute;
+    top:60px;
+    right:0;
+    width:200px;
+    padding:20px;
+  }
   nav.open{display:flex;}
   .hamburger{display:flex;}
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -269,7 +282,6 @@ footer{
     <h1>Charlotte’s Most Trusted Tree Experts</h1>
     <p>Young • Professional • Fully Insured • Free Estimates</p>
 
-    <!-- CLICKABLE BUTTON (FIXED) -->
     <button class="btn" onclick="window.location.href='contact.html'">
       Get a Free Quote
     </button>
@@ -300,74 +312,122 @@ footer{
   <p>© 2025 Bramos Tree Solution</p>
 </footer>
 
-<!-- CHAT WIDGET -->
-<div class="chat-widget minimized attention" id="chatWidget">
+<!-- CHAT BOT -->
+<div class="chat-widget minimized" id="chatWidget">
   <div class="chat-header">
-    <span>Chat with us</span>
+    <span>Ask A Question</span>
     <button id="toggleChat">-</button>
   </div>
+
   <div class="chat-body" id="chatBody"></div>
+
   <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="Ask a question…">
+    <input type="text" id="chatInput" placeholder="Ask something…">
     <button id="chatSend">Send</button>
   </div>
 </div>
 
 <script>
-// Menu Toggle
-const hamburger=document.getElementById('hamburger');
-const nav=document.getElementById('nav');
-hamburger.onclick=()=>nav.classList.toggle('open');
+// NAV
+document.getElementById('hamburger').onclick = () =>
+  document.getElementById('nav').classList.toggle('open');
 
-// Chat Widget Logic
-const chatWidget=document.getElementById('chatWidget');
-const toggleChat=document.getElementById('toggleChat');
+// CHAT
+const chatWidget = document.getElementById('chatWidget');
+const toggleChat = document.getElementById('toggleChat');
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
 
+toggleChat.onclick = () => chatWidget.classList.toggle('minimized');
 chatWidget.classList.add('minimized');
 
-toggleChat.onclick=()=>{
-  chatWidget.classList.toggle('minimized');
-};
-
-// Auto-popup bottom-right
 setTimeout(()=>chatWidget.classList.remove('minimized'),1200);
 setTimeout(()=>chatWidget.classList.add('minimized'),4200);
 
-// Chat Rules
-const rules=[
-  {keywords:["remove","tree removal"],response:"Yes! We offer full tree removal."},
-  {keywords:["trim","trimming"],response:"Yes, we provide trimming & shaping."},
-  {keywords:["stump","grind"],response:"We specialize in stump grinding."},
-  {keywords:["storm","emergency"],response:"We offer 24/7 emergency storm cleanup."},
-  {keywords:["estimate","quote"],response:"We offer FREE estimates!"}
+/* RULE ENGINE WITH CTA BUTTONS */
+const rules = [
+
+  { keywords:["remove","tree removal","cut down"],
+    response:"We offer safe, insured tree removal. How many trees are you dealing with?<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["trim","trimming","prune","shaping"],
+    response:"We provide professional trimming. Are you trimming one or several trees?<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["stump","grind","grinding"],
+    response:"We grind stumps below ground level. How many stumps do you have?<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["storm","fallen","emergency","wind"],
+    response:"We offer 24/7 storm cleanup. Is the tree causing damage?<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["quote","estimate","price","cost","much"],
+    response:"We provide FREE estimates. A team member will follow up shortly.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["insured","insurance","licensed","bonded"],
+    response:"Yes — we are fully insured.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["area","location","service"],
+    response:"We service Charlotte, Matthews, Mint Hill, Pineville, and Concord.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["yes","yeah","yep","ok","okay","sure"],
+    response:"Great! Call (704) 641-2888 or click below — a team member will get back to you shortly.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["one","two","three","1","2","3","four","4"],
+    response:"We can help with that! Click below and a team member will reach out shortly.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["not sure","maybe","idk"],
+    response:"No problem — we can walk you through it. Click below and a team member will follow up.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["schedule","time","when"],
+    response:"We’re flexible! Click below and a team member will contact you shortly.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["call","phone"],
+    response:"You can reach us at (704) 641-2888!<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>"
+  },
+
+  { keywords:["hello","hi","hey"],
+    response:"Hi there! How can we help with your trees today?"
+  },
 ];
 
-const chatInput=document.getElementById('chatInput');
-const chatSend=document.getElementById('chatSend');
-const chatBody=document.getElementById('chatBody');
-
-chatSend.onclick=()=>sendMessage();
-chatInput.onkeypress=e=>{if(e.key==="Enter")sendMessage();};
-
+/* SEND MESSAGE */
 function sendMessage(){
-  let msg=chatInput.value.trim();
-  if(!msg)return;
-  chatBody.innerHTML+=`<div><b>You:</b> ${msg}</div>`;
-  chatInput.value="";
-  let res=findResponse(msg.toLowerCase());
+  let msg = chatInput.value.trim();
+  if(!msg) return;
+
+  chatBody.innerHTML += `<div><b>You:</b> ${msg}</div>`;
+  chatInput.value = "";
+
+  let res = findResponse(msg.toLowerCase());
+
   setTimeout(()=>{
-    chatBody.innerHTML+=`<div><b>Bot:</b> ${res}</div>`;
-    chatBody.scrollTop=chatBody.scrollHeight;
+    chatBody.innerHTML += `<div><b>Bot:</b> ${res}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
   },250);
 }
 
+chatSend.onclick = () => sendMessage();
+chatInput.onkeypress = e => { if(e.key==="Enter") sendMessage(); };
+
 function findResponse(msg){
-  for(let rule of rules){
-    for(let k of rule.keywords){
-      if(msg.includes(k)) return rule.response;
+  for(let r of rules){
+    for(let k of r.keywords){
+      if(msg.includes(k)) return r.response;
     }
   }
-  return "Thanks for your message! We'll respond shortly.";
+
+  return "We can definitely help! Call (704) 641-2888 or click below — a team member will get back to you shortly.<br><div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>";
 }
 </script>
 
