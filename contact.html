@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get a Quote | Bramos Tree Solution</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{
+  background:#0b0b0b;
+  color:#fff;
+  overflow-x:hidden;
+  text-align:center;
+  padding:50px 0;
+}
+
+/* TITLE */
+h1{
+  color:#00ff64;
+  font-size:2.4rem;
+  text-shadow:0 0 10px #00ff64;
+  margin-bottom:20px;
+}
+
+/* FORM */
+form{
+  width:90%;
+  max-width:550px;
+  margin:40px auto;
+  text-align:left;
+  background:#111;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 0 25px rgba(0,255,100,0.3);
+}
+
+label{
+  color:#00ff64;
+  font-weight:600;
+}
+
+input,textarea{
+  width:100%;
+  padding:14px;
+  background:#222;
+  border:1px solid #00ff64;
+  color:#fff;
+  border-radius:8px;
+  margin-top:6px;
+  margin-bottom:20px;
+  font-size:1rem;
+}
+
+button{
+  background:linear-gradient(90deg,#00ff64,#009944);
+  padding:15px 28px;
+  border:none;
+  font-size:1.1rem;
+  font-weight:600;
+  color:#000;
+  border-radius:8px;
+  cursor:pointer;
+  box-shadow:0 0 20px #00ff64;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px #00ff64;
+}
+
+/* BACK LINK */
+a{
+  color:#00ff64;
+  text-decoration:none;
+  margin-top:25px;
+  display:block;
+  font-weight:600;
+  text-shadow:0 0 8px #00ff64;
+}
+a:hover{
+  color:#fff;
+  text-shadow:0 0 10px #00ff64;
+}
+</style>
+</head>
+<body>
+
+<h1>Request a Free Quote</h1>
+
+<form action="https://formsubmit.co/ericlane87@gmail.com" method="POST">
+
+  <!-- hidden fields -->
+  <input type="hidden" name="_subject" value="New Quote Request - Bramos Tree Solution">
+  <input type="hidden" name="_next" value="thankyou.html">
+
+  <label>Name</label>
+  <input type="text" name="name" required>
+
+  <label>Phone</label>
+  <input type="text" name="phone" required>
+
+  <label>Email</label>
+  <input type="email" name="email" required>
+
+  <label>Service Needed</label>
+  <textarea name="message" rows="4" required></textarea>
+
+  <button type="submit">Submit Request</button>
+</form>
+
+<a href="index.html">← Back to Home</a>
+
+</body>
+</html>
