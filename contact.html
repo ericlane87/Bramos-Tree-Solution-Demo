@@ -65,6 +65,7 @@ button{
   cursor:pointer;
   box-shadow:0 0 20px #00ff64;
   transition:0.3s;
+  width:100%;
 }
 
 button:hover{
@@ -92,12 +93,29 @@ a:hover{
 <h1>Request a Free Quote</h1>
 
 <form action="https://formsubmit.co/ericlane87@gmail.com" method="POST">
-  <input type="hidden" name="_subject" value="New Quote Request - Bramos Tree Solution">
-  <input type="hidden" name="_next" value="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/thankyou.html">
-  <input type="hidden" name="_captcha" value="false">
-  ...
-</form>
 
+  <!-- REQUIRED SETTINGS -->
+  <input type="hidden" name="_captcha" value="false">
+
+  <!-- FULL, CORRECT REDIRECT URL -->
+  <input type="hidden" name="_next" value="https://ericlane87.github.io/Bramos-Tree-Solution-Demo/thankyou">
+
+  <input type="hidden" name="_subject" value="New Quote Request - Bramos Tree Solution">
+
+  <label>Name</label>
+  <input type="text" name="name" required>
+
+  <label>Phone</label>
+  <input type="text" name="phone" required>
+
+  <label>Email</label>
+  <input type="email" name="email" required>
+
+  <label>Service Needed</label>
+  <textarea name="message" rows="4" required></textarea>
+
+  <button type="submit">Submit Request</button>
+</form>
 
 <a href="index.html">← Back to Home</a>
 
