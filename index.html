@@ -34,11 +34,6 @@ nav a:hover{color:#00ff64;text-shadow:0 0 10px #00ff64;}
 section{padding:70px 0;text-align:center;}
 h2{font-size:2.2rem;font-weight:700;margin-bottom:25px;color:#00ff64;text-shadow:0 0 10px #00ff64;}
 
-/* GALLERY */
-.grid{width:90%;max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:25px;}
-.grid img{width:100%;height:200px;object-fit:cover;border-radius:12px;box-shadow:0 0 15px rgba(0,255,100,0.3);transition:.4s;}
-.grid img:hover{transform:scale(1.05);box-shadow:0 0 25px #00ff64;}
-
 /* FOOTER */
 footer{background:#111;padding:25px 0;text-align:center;margin-top:50px;border-top:1px solid #00ff64;}
 
@@ -70,7 +65,6 @@ nav.open{display:flex;}
         <li><a href="#home">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="services.html">Services</a></li>
-        <li><a href="#gallery">Gallery</a></li>
         <li><a href="contact.html">Get Quote</a></li>
       </ul>
     </nav>
@@ -97,16 +91,6 @@ nav.open{display:flex;}
   </p>
 </section>
 
-<section id="gallery">
-  <h2>Our Work</h2>
-  <div class="grid">
-    <img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&w=800&q=80">
-    <img src="https://images.unsplash.com/photo-1581091870686-cd229d4ec3cd?auto=format&fit=crop&w=800&q=80">
-    <img src="https://images.unsplash.com/photo-1601987077608-3c2e84e6aa55?auto=format&fit=crop&w=800&q=80">
-    <img src="https://images.unsplash.com/photo-1611765084248-ccffba8c5c2c?auto=format&fit=crop&w=800&q=80">
-  </div>
-</section>
-
 <footer>
   <p>Bramos Tree Solution • Charlotte, NC • (704) 641-2888</p>
   <p>© 2025 Bramos Tree Solution</p>
@@ -128,7 +112,7 @@ const hamburger=document.getElementById('hamburger');
 const nav=document.getElementById('nav');
 hamburger.onclick=()=>nav.classList.toggle('open');
 
-// RULE-BASED CHAT
+// CHAT (RULE-BASED)
 const rules=[
   {keywords:["remove","tree removal"],response:"Yes! We offer full tree removal."},
   {keywords:["trim","trimming"],response:"Yes, we provide trimming & shaping."},
@@ -136,6 +120,7 @@ const rules=[
   {keywords:["storm","emergency"],response:"We offer 24/7 emergency storm cleanup."},
   {keywords:["estimate","quote"],response:"We offer FREE estimates."}
 ];
+
 const chatInput=document.getElementById('chatInput');
 const chatSend=document.getElementById('chatSend');
 const chatBody=document.getElementById('chatBody');
@@ -154,10 +139,16 @@ function sendMessage(){
     chatBody.scrollTop=chatBody.scrollHeight;
   },300);
 }
+
 function findResponse(msg){
-  for(let rule of rules){for(let k of rule.keywords){if(msg.includes(k))return rule.response;}}
+  for(let rule of rules){
+    for(let k of rule.keywords){
+      if(msg.includes(k)) return rule.response;
+    }
+  }
   return "Thanks for your message!";
 }
 </script>
+
 </body>
 </html>
