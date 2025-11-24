@@ -3,88 +3,217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Services | Bramos Tree Solution</title>
+<title>Services | Bramos Tree Solution</title>
+
+<!-- Tree Favicon -->
+<link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/808/808569.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
-body{padding:20px;line-height:1.6;background:#fff;color:#333;}
-h1{color:#0a5a0a;text-align:center;margin-bottom:20px;}
-h2{color:#0a5a0a;margin-bottom:10px;}
-a{color:#0a5a0a;text-decoration:none;font-weight:bold;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#0b0b0b;color:#fff;overflow-x:hidden;}
 
-.service-card{
-background:#f8f8f8;
-padding:20px;
-margin:20px 0;
-border-radius:8px;
-box-shadow:0 2px 6px rgba(0,0,0,.1);
+/* HEADER (matches home) */
+header{
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(8px);
+  padding:15px 0;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+.container{
+  width:92%;
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.logo{
+  font-size:1.8em;
+  font-weight:800;
+  color:#00ff64;
+  text-shadow:0 0 10px #00ff64;
+}
+nav ul{list-style:none;display:flex;gap:25px;}
+nav a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:500;
+  transition:0.3s;
+}
+nav a:hover{
+  color:#00ff64;
+  text-shadow:0 0 10px #00ff64;
+}
+.hamburger{
+  display:none;
+  flex-direction:column;
+  gap:6px;
+  cursor:pointer;
+}
+.hamburger span{width:28px;height:3px;background:#00ff64;}
+
+/* PAGE TITLE */
+.page-header{
+  text-align:center;
+  padding:60px 20px;
+  background:#111;
+  box-shadow:0 0 25px rgba(0,255,100,0.2);
+}
+.page-header h1{
+  font-size:3rem;
+  font-weight:800;
+  color:#00ff64;
+  text-shadow:0 0 15px #00ff64;
 }
 
-.service-card img{
-width:100%;
-border-radius:8px;
-margin-top:10px;
+/* SERVICES GRID */
+.services-section{
+  padding:70px 0;
+  width:92%;
+  max-width:1200px;
+  margin:auto;
+}
+h2{
+  font-size:2.2rem;
+  font-weight:700;
+  margin-bottom:25px;
+  color:#00ff64;
+  text-shadow:0 0 10px #00ff64;
+  text-align:center;
+}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+  gap:25px;
+}
+.service-box{
+  background:#111;
+  padding:25px;
+  border-radius:12px;
+  border:2px solid #00ff64;
+  box-shadow:0 0 25px rgba(0,255,100,0.2);
+  transition:0.3s;
+  text-align:center;
+}
+.service-box:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 35px rgba(0,255,100,0.4);
+}
+.service-box h3{
+  font-size:1.5rem;
+  color:#00ff64;
+  margin-bottom:15px;
+}
+.service-box p{
+  opacity:0.85;
+  font-size:1rem;
+  line-height:1.5rem;
 }
 
-.back{
-margin-top:30px;
-text-align:center;
+/* FOOTER */
+footer{
+  background:#111;
+  padding:25px 0;
+  text-align:center;
+  margin-top:60px;
+  border-top:1px solid #00ff64;
+}
+
+/* MOBILE NAV */
+@media(max-width:768px){
+  nav{
+    display:none;
+    flex-direction:column;
+    background:#000;
+    position:absolute;
+    top:60px;
+    right:0;
+    width:200px;
+    padding:20px;
+  }
+  nav.open{display:flex;}
+  .hamburger{display:flex;}
 }
 </style>
 </head>
 <body>
 
-<h1>Our Professional Tree Services</h1>
+<header>
+  <div class="container">
+    <div class="logo">BRAMOS TREE</div>
 
-<p style="text-align:center;max-width:750px;margin:auto;">
-At Bramos Tree Solution, we provide full-service tree care to protect your home, enhance curb appeal, 
-and remove hazardous trees safely and professionally. Below is a complete list of our services.
-</p>
+    <nav id="nav">
+      <ul>
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="index.html#work">Our Work</a></li>
+        <li><a href="contact.html">Get Quote</a></li>
+      </ul>
+    </nav>
 
-<!-- SERVICE CARD 1 -->
-<div class="service-card">
-<h2>🌳 Tree Removal</h2>
-<p>Safe and efficient removal of damaged, diseased, or unwanted trees — including full cleanup.</p>
-<img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&w=800&q=80">
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>Our Professional Tree Services</h1>
 </div>
 
-<!-- SERVICE CARD 2 -->
-<div class="service-card">
-<h2>✂️ Tree Trimming & Shaping</h2>
-<p>Professional trimming to improve tree health, appearance, and safety around your property.</p>
-<img src="https://images.unsplash.com/photo-1581091870686-cd229d4ec3cd?auto=format&fit=crop&w=800&q=80">
-</div>
+<section class="services-section">
+  <h2>What We Offer</h2>
 
-<!-- SERVICE CARD 3 -->
-<div class="service-card">
-<h2>🪵 Stump Grinding</h2>
-<p>We grind stumps below ground level to prevent regrowth and improve your yard's appearance.</p>
-<img src="https://images.unsplash.com/photo-1559113369-340ba5f5e0b8?auto=format&fit=crop&w=800&q=80">
-</div>
+  <div class="services-grid">
 
-<!-- SERVICE CARD 4 -->
-<div class="service-card">
-<h2>⚡ Emergency Storm Cleanup</h2>
-<p>24/7 emergency response for fallen trees, storm debris, and dangerous limbs.</p>
-<img src="https://images.unsplash.com/photo-1583339522870-0d9fdb3fd33e?auto=format&fit=crop&w=800&q=80">
-</div>
+    <div class="service-box">
+      <h3>Tree Removal</h3>
+      <p>Safe, fast, and fully insured tree removal for residential and commercial properties. We handle hazardous trees, storm-damaged trees, and full property clearing.</p>
+    </div>
 
-<!-- SERVICE CARD 5 -->
-<div class="service-card">
-<h2>🚜 Lot Clearing</h2>
-<p>Full property and construction site clearing, including brush, debris, and tree removal.</p>
-<img src="https://images.unsplash.com/photo-1601987077608-3c2e84e6aa55?auto=format&fit=crop&w=800&q=80">
-</div>
+    <div class="service-box">
+      <h3>Tree Trimming</h3>
+      <p>Professional trimming to improve tree health, shape, sunlight exposure, and curb appeal. We prevent overgrowth and remove dangerous branches.</p>
+    </div>
 
-<!-- SERVICE CARD 6 -->
-<div class="service-card">
-<h2>🌱 Tree Health & Maintenance</h2>
-<p>Regular pruning, seasonal care, and hazard prevention to maintain healthy trees year-round.</p>
-<img src="https://images.unsplash.com/photo-1611765084248-ccffba8c5c2c?auto=format&fit=crop&w=800&q=80">
-</div>
+    <div class="service-box">
+      <h3>Stump Grinding</h3>
+      <p>We grind tree stumps below ground level to eliminate hazards and prepare your yard for replanting or full landscaping.</p>
+    </div>
 
-<div class="back">
-<a href="index.html">← Back to Home</a>
-</div>
+    <div class="service-box">
+      <h3>Emergency Storm Cleanup</h3>
+      <p>24/7 emergency response for fallen trees and storm debris. We secure your property quickly and safely after severe weather.</p>
+    </div>
+
+    <div class="service-box">
+      <h3>Lot & Brush Clearing</h3>
+      <p>Full clearing of overgrown lots, brush, and small trees to prepare your land for construction, landscaping, or resale.</p>
+    </div>
+
+    <div class="service-box">
+      <h3>Hedge & Shrub Shaping</h3>
+      <p>Perfectly shaped hedges and shrubs to enhance your landscape with a clean, professional look.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Bramos Tree Solution • Charlotte, NC • (704) 641-2888</p>
+  <p>© 2025 Bramos Tree Solution</p>
+</footer>
+
+<script>
+const hamburger=document.getElementById('hamburger');
+const nav=document.getElementById('nav');
+hamburger.onclick=()=>nav.classList.toggle('open');
+</script>
 
 </body>
 </html>
