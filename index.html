@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bramos Tree Solution | Charlotte NC Tree Service</title>
 <meta name="description" content="Bramos Tree Solution provides expert tree removal, trimming, stump grinding & storm cleanup in Charlotte NC. Free estimates. Fully insured.">
+
 <style>
 /* RESET */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
@@ -33,11 +34,6 @@ section{padding:60px 0;}
 h2{text-align:center;margin-bottom:25px;font-size:2em;color:#0a5a0a;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;}
 .grid img{width:100%;border-radius:10px;}
-
-/* SERVICES */
-ul.list{list-style:none;width:90%;max-width:600px;margin:auto;}
-ul.list li{padding:12px 0;padding-left:20px;position:relative;font-size:1.1em;}
-ul.list li::before{content:"✔";position:absolute;left:0;color:#0a5a0a;font-weight:bold;}
 
 /* CONTACT */
 form{width:90%;max-width:500px;margin:auto;}
@@ -85,7 +81,7 @@ nav.open{display:flex;}
 <ul>
 <li><a href="#home">Home</a></li>
 <li><a href="about.html">About</a></li>
-<li><a href="#services">Services</a></li>
+<li><a href="services.html">Services</a></li>
 <li><a href="#gallery">Gallery</a></li>
 <li><a href="#contact">Get Quote</a></li>
 </ul>
@@ -110,31 +106,19 @@ nav.open{display:flex;}
 <section>
 <h2>Professional Tree Service in Charlotte, NC</h2>
 <p style="max-width:800px;margin:auto;text-align:center;font-size:1.1em;">
-Bramos Tree Solution is Charlotte’s reliable tree care provider. From removal and trimming to stump grinding and storm cleanup, we ensure your property stays safe and beautiful.
+Bramos Tree Solution is Charlotte’s reliable tree care provider. From removal and trimming to stump grinding and storm cleanup, 
+we ensure your property stays safe and beautiful.
 </p>
-</section>
-
-<!-- SERVICES -->
-<section id="services">
-<h2>Our Services</h2>
-<ul class="list">
-<li>Tree Removal</li>
-<li>Tree Trimming & Shaping</li>
-<li>Stump Grinding</li>
-<li>Emergency Storm Cleanup</li>
-<li>Lot Clearing</li>
-<li>Tree Preservation & Maintenance</li>
-</ul>
 </section>
 
 <!-- GALLERY -->
 <section id="gallery">
 <h2>Gallery</h2>
 <div class="grid">
-<img src="https://source.unsplash.com/600x400/?tree-removal" alt="">
-<img src="https://source.unsplash.com/600x400/?tree-cutting" alt="">
-<img src="https://source.unsplash.com/600x400/?tree-service" alt="">
-<img src="https://source.unsplash.com/600x400/?stump-grinding" alt="">
+<img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&w=800&q=80" alt="">
+<img src="https://images.unsplash.com/photo-1581091870686-cd229d4ec3cd?auto=format&fit=crop&w=800&q=80" alt="">
+<img src="https://images.unsplash.com/photo-1601987077608-3c2e84e6aa55?auto=format&fit=crop&w=800&q=80" alt="">
+<img src="https://images.unsplash.com/photo-1611765084248-ccffba8c5c2c?auto=format&fit=crop&w=800&q=80" alt="">
 </div>
 </section>
 
@@ -198,23 +182,52 @@ document.getElementById('openQuote').onclick=()=> {
 document.getElementById('contact').scrollIntoView({behavior:'smooth'});
 };
 
-// CHAT BOT BASIC
+// RULE-BASED CHATBOT
+const rules = [
+  { keywords: ["remove","tree removal","cut down","fell"], response: "Yes! We offer full tree removal, including cleanup. Free estimates available." },
+  { keywords: ["trim","trimming","cut branches","shape"], response: "Yes, we provide tree trimming and shaping services." },
+  { keywords: ["stump","grind","stump grinding"], response: "Yes, we perform stump grinding and root removal." },
+  { keywords: ["storm","emergency","24","after hours"], response: "We offer 24/7 emergency storm cleanup. Call anytime: (704) 641-2888." },
+  { keywords: ["insured","license","licensed","insurance"], response: "Absolutely — Bramos Tree Solution is fully licensed and insured." },
+  { keywords: ["estimate","quote","price","cost"], response: "We provide FREE estimates. Would you like to send your address for a quote?" },
+  { keywords: ["location","where","service area","serve"], response: "We serve all of Charlotte, NC and surrounding areas." },
+  { keywords: ["hello","hi","hey"], response: "Hi there! How can we help with your tree service today?" },
+  { keywords: ["hours","open","availability"], response: "We operate 24/7 for emergencies and 8am–6pm for regular service." }
+];
+
+// CHAT ELEMENTS
 const chatInput=document.getElementById('chatInput');
 const chatSend=document.getElementById('chatSend');
 const chatBody=document.getElementById('chatBody');
 
-chatSend.onclick=()=>{
-let msg=chatInput.value.trim();
-if(!msg) return;
+chatSend.onclick=()=>handleMessage();
+chatInput.onkeypress=(e)=>{ if(e.key==="Enter") handleMessage(); };
 
-chatBody.innerHTML+=`<p><b>You:</b> ${msg}</p>`;
-chatInput.value="";
+function handleMessage(){
+ let msg=chatInput.value.trim();
+ if(!msg) return;
 
-setTimeout(()=>{
-chatBody.innerHTML+=`<p><b>Bot:</b> Thanks for your message! We will reply shortly.</p>`;
-chatBody.scrollTop=chatBody.scrollHeight;
-},500);
-};
+ chatBody.innerHTML+=`<p><b>You:</b> ${msg}</p>`;
+ chatInput.value="";
+
+ let botResponse=getBotResponse(msg.toLowerCase());
+
+ setTimeout(()=>{
+   chatBody.innerHTML+=`<p><b>Bot:</b> ${botResponse}</p>`;
+   chatBody.scrollTop=chatBody.scrollHeight;
+ },400);
+}
+
+function getBotResponse(message){
+ for(let rule of rules){
+   for(let word of rule.keywords){
+     if(message.includes(word)){
+       return rule.response;
+     }
+   }
+ }
+ return "Thanks for your message! A team member will reach out shortly.";
+}
 
 </script>
 
