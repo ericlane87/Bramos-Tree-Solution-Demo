@@ -256,7 +256,7 @@ footer{
 
 <header>
   <div class="container">
-    <div class="logo">BRAMOS TREE SOLUTION</div>
+    <div class="logo">BRAMOS TREE</div>
 
     <nav id="nav">
       <ul>
@@ -349,22 +349,24 @@ function clearBadge(){
   chatBadge.style.display = "none";
 }
 
-// TIME GREETING
+// TIME GREETING (CORRECTED)
 function getGreeting(){
-  const h=new Date().getHours();
-  if(h<12) return "Good morning!";
-  if(h<18) return "Good afternoon!";
+  const h = new Date().getHours();
+
+  if(h >= 0 && h < 12)
+    return "Good morning!";
+  if(h >= 12 && h < 18)
+    return "Good afternoon!";
   return "Good evening!";
 }
 
-// AUTO EXPAND → MINIMIZE → SEND GREETINGS
+// AUTO EXPAND → MINIMIZE AFTER 1.5 SECONDS → SEND GREETING
 chatWidget.classList.remove('minimized');
 
 setTimeout(() => {
   chatWidget.classList.add('minimized');
-
   sendInitialMessages();
-}, 2000);
+}, 1500);
 
 // USER MESSAGE
 function userMsg(text){
@@ -405,11 +407,10 @@ toggleChat.onclick = e=>{
   if(!chatWidget.classList.contains('minimized')) clearBadge();
 };
 
-// FIRST QUESTION LOGIC
+// YES/NO FIRST QUESTION LOGIC
 function handleFirstQuestion(msg){
   const m = msg.toLowerCase();
 
-  // YES
   if(m.includes("yes")){
     botMsg(`Great! Here's a quick link to explore our services:<br><br>
       <div class='chat-cta' onclick="window.location.href='services.html'">View Our Services</div>`);
@@ -417,28 +418,27 @@ function handleFirstQuestion(msg){
     return true;
   }
 
-  // NO
   if(m.includes("no")){
-    botMsg(`No problem at all! How can I help?<br>Try typing Something Like: <b>"What are your hours?"</b>`);
+    botMsg(`No problem at all! How can I help?<br>Try typing: <b>"What are your hours?"</b>`);
     firstInteraction = false;
     return true;
   }
 
-  // If irrelevant, still end first-interaction mode
   firstInteraction = false;
   return false;
 }
 
-// RULE ENGINE, MEMORY, PRICE LOGIC — SAME AS PRIOR VERSION
-
+// RULE ENGINE, MEMORY, PRICE LOGIC
 const memory={lastTopic:null,trees:null,stumps:null,city:null};
 let catchAllCounter=0;
 
 function isPriceIntent(msg){
   const t=msg.toLowerCase();
   const priceWords=[
-    "quote","estimate","price","cost","how much","budget","dollars","bucks",
-    "affordable","expensive","rate","rates","fee","fees","charge","charges"
+    "quote","estimate","price","cost","how much",
+    "budget","dollars","bucks","affordable",
+    "expensive","rate","rates","fee","fees",
+    "charge","charges"
   ];
   for(const w of priceWords){ if(t.includes(w)) return true; }
   if(t.includes("$")) return true;
@@ -460,12 +460,9 @@ const rules=[
   {keywords:["stump","grind"],topic:"stumps",
     response:"We grind stumps below ground level. How many stumps do you have?"},
 
-  {keywords:[
-    "service","services","tree service","tree services",
-    "what do you do","what services","list of services",
-    "your services"
-  ],topic:"services",
-    response:"We offer tree removal, trimming, stump grinding, and 24/7 storm cleanup. What type of project do you need help with?"},
+  {keywords:["service","services","tree service","tree services","what do you do","what services"],
+    topic:"services",
+    response:"We offer tree removal, trimming, stump grinding, and 24/7 storm cleanup. What do you need help with?"},
 
   {keywords:["storm","fallen","emergency"],topic:"emergency",
     response:"We offer 24/7 storm cleanup. Did the tree fall on anything or block a driveway?"},
@@ -480,7 +477,7 @@ const rules=[
     response:"We’re available 24/7 for all tree work and storm emergencies."},
 
   {keywords:["schedule","day","tomorrow"],topic:"schedule",
-    response:"We’re flexible and can usually work around your schedule. What day works best for you?"},
+    response:"We’re flexible and can work around your schedule. What day works best?"},
 
   {keywords:["call","phone"],topic:"phone",
     response:"You can reach us anytime at (704) 641-2888."},
@@ -495,12 +492,12 @@ function handleMemory(msg){
 
   if(num && memory.lastTopic==="stumps"){
     memory.stumps=num[0];
-    return `Got it — ${memory.stumps} stump(s). If you'd like a quote, just ask.`;
+    return `Got it — ${memory.stumps} stump(s). Need a quote?`;
   }
 
   if(num && memory.lastTopic==="trees"){
     memory.trees=num[0];
-    return `Understood — ${memory.trees} tree(s). If you'd like an estimate, feel free to ask.`;
+    return `Understood — ${memory.trees} tree(s). Need an estimate?`;
   }
 
   if(memory.lastTopic==="location"){
@@ -527,13 +524,13 @@ function findRule(msg){
 function catchAll(){
   catchAllCounter++;
   if(catchAllCounter===1)
-    return "I can help with removal, trimming, stump grinding, or storm cleanup. Tell me a bit more.";
+    return "I can help with removal, trimming, stump grinding, or storm cleanup. Tell me more.";
   if(catchAllCounter===2)
     return "If you'd rather talk to a real person, call anytime at (704) 641-2888.";
   return "You can reach us at (704) 641-2888 — we're available 24/7.";
 }
 
-// SEND MESSAGE PIPELINE
+// SEND MESSAGE
 function sendMessage(){
   const msg=chatInput.value.trim();
   if(!msg) return;
