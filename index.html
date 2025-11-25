@@ -256,7 +256,7 @@ footer{
 
 <header>
   <div class="container">
-    <div class="logo">BRAMOS TREE SOLUTION</div>
+    <div class="logo">BRAMOS TREE</div>
 
     <nav id="nav">
       <ul>
@@ -343,26 +343,25 @@ const chatSend   = document.getElementById('chatSend');
 let firstInteraction = true;
 let unreadCount = 0;
 
+// estimate prompt state (for "Need an estimate/quote?" follow-up)
+let estimatePromptActive = false;
+
 // CLEAR BADGE
 function clearBadge(){
   unreadCount = 0;
   chatBadge.style.display = "none";
 }
 
-// TIME GREETING (CORRECT RULES)
+// TIME GREETING
 function getGreeting(){
   const h = new Date().getHours();
-
-  if(h >= 0 && h < 12)
-    return "Good morning!";
-  if(h >= 12 && h < 18)
-    return "Good afternoon!";
+  if(h >= 0 && h < 12) return "Good morning!";
+  if(h >= 12 && h < 18) return "Good afternoon!";
   return "Good evening!";
 }
 
 // WAIT 2 sec → OPEN 1.5 sec → MINIMIZE → SEND 2 GREETINGS
 setTimeout(() => {
-
   chatWidget.classList.remove('minimized');
 
   setTimeout(() => {
@@ -411,7 +410,7 @@ toggleChat.onclick = e=>{
   if(!chatWidget.classList.contains('minimized')) clearBadge();
 };
 
-// YES/NO FIRST QUESTION LOGIC
+// YES/NO FIRST QUESTION LOGIC (services)
 function handleFirstQuestion(msg){
   const m = msg.toLowerCase();
 
@@ -429,6 +428,31 @@ function handleFirstQuestion(msg){
   }
 
   firstInteraction = false;
+  return false;
+}
+
+// AFFIRMATIVE DETECTION (Option C)
+function isAffirmative(msg){
+  const m = msg.toLowerCase();
+
+  const phrases = [
+    "yes","yeah","yep","yup","sure","ok","okay","of course",
+    "absolutely","please","sounds good","that works","that’s fine",
+    "thats fine","let's do it","lets do it","do it","go ahead",
+    "i do","i want","i would like","send it","give me a quote",
+    "give me an estimate","i need a quote","i need an estimate",
+    "help me with that"
+  ];
+
+  for(const p of phrases){
+    if(m.includes(p)) return true;
+  }
+
+  // Also treat explicit "estimate" or "quote" with some positive verb as affirmative-ish
+  if((m.includes("estimate") || m.includes("quote")) &&
+     (m.includes("need") || m.includes("want") || m.includes("get") || m.includes("send")))
+    return true;
+
   return false;
 }
 
@@ -495,12 +519,16 @@ function handleMemory(msg){
   const num=m.match(/\b\d+\b/);
 
   if(num && memory.lastTopic==="stumps"){
-    memory.stumps=num[0];
+    memory.stumps = num[0];
+    // turn on estimate prompt mode
+    estimatePromptActive = true;
     return `Got it — ${memory.stumps} stump(s). Need a quote?`;
   }
 
   if(num && memory.lastTopic==="trees"){
-    memory.trees=num[0];
+    memory.trees = num[0];
+    // turn on estimate prompt mode
+    estimatePromptActive = true;
     return `Understood — ${memory.trees} tree(s). Need an estimate?`;
   }
 
@@ -542,8 +570,17 @@ function sendMessage(){
   userMsg(msg);
   chatInput.value="";
 
+  // First greeting question (services)
   if(firstInteraction){
     if(handleFirstQuestion(msg)) return;
+  }
+
+  // If we recently asked "Need an estimate/quote?" and they respond positively
+  if(estimatePromptActive && isAffirmative(msg)){
+    botMsg(`Great! A team member will contact you shortly.<br><br>
+      <div class='chat-cta' onclick="window.location.href='contact.html'">Get a Free Quote</div>`);
+    estimatePromptActive = false;
+    return;
   }
 
   const mem=handleMemory(msg);
