@@ -233,7 +233,7 @@ footer{
   font-weight:600;
 }
 
-/* CTA */
+/* CTA BUTTON */
 .chat-cta{
   display:inline-block;
   margin-top:10px;
@@ -256,7 +256,7 @@ footer{
 
 <header>
   <div class="container">
-    <div class="logo">BRAMOS TREE SOLUTION</div>
+    <div class="logo">BRAMOS TREE</div>
 
     <nav id="nav">
       <ul>
@@ -293,13 +293,16 @@ footer{
   </p>
 </section>
 
+<!-- UPDATED 6 PLACE-HOLDERS -->
 <section id="work">
   <h2>Our Work</h2>
   <div class="grid">
-    <div class="placeholder-box"></div>
-    <div class="placeholder-box"></div>
-    <div class="placeholder-box"></div>
-    <div class="placeholder-box"></div>
+    <div class="placeholder-box">PLACE HOLDER</div>
+    <div class="placeholder-box">PLACE HOLDER</div>
+    <div class="placeholder-box">PLACE HOLDER</div>
+    <div class="placeholder-box">PLACE HOLDER</div>
+    <div class="placeholder-box">PLACE HOLDER</div>
+    <div class="placeholder-box">PLACE HOLDER</div>
   </div>
 </section>
 
@@ -342,8 +345,6 @@ const chatSend   = document.getElementById('chatSend');
 
 let firstInteraction = true;
 let unreadCount = 0;
-
-// estimate prompt state (for "Need an estimate/quote?" follow-up)
 let estimatePromptActive = false;
 
 // CLEAR BADGE
@@ -410,7 +411,7 @@ toggleChat.onclick = e=>{
   if(!chatWidget.classList.contains('minimized')) clearBadge();
 };
 
-// YES/NO FIRST QUESTION LOGIC (services)
+// FIRST QUESTION LOGIC
 function handleFirstQuestion(msg){
   const m = msg.toLowerCase();
 
@@ -431,10 +432,9 @@ function handleFirstQuestion(msg){
   return false;
 }
 
-// AFFIRMATIVE DETECTION (Option C)
+// AFFIRMATIVES (Option C)
 function isAffirmative(msg){
   const m = msg.toLowerCase();
-
   const phrases = [
     "yes","yeah","yep","yup","sure","ok","okay","of course",
     "absolutely","please","sounds good","that works","that’s fine",
@@ -443,20 +443,16 @@ function isAffirmative(msg){
     "give me an estimate","i need a quote","i need an estimate",
     "help me with that"
   ];
-
   for(const p of phrases){
     if(m.includes(p)) return true;
   }
-
-  // Also treat explicit "estimate" or "quote" with some positive verb as affirmative-ish
   if((m.includes("estimate") || m.includes("quote")) &&
      (m.includes("need") || m.includes("want") || m.includes("get") || m.includes("send")))
     return true;
-
   return false;
 }
 
-// RULE ENGINE, MEMORY, PRICE LOGIC
+// RULE ENGINE
 const memory={lastTopic:null,trees:null,stumps:null,city:null};
 let catchAllCounter=0;
 
@@ -490,7 +486,7 @@ const rules=[
 
   {keywords:["service","services","tree service","tree services","what do you do","what services"],
     topic:"services",
-    response:"We offer tree removal, trimming, stump grinding, and 24/7 storm cleanup. What do you need help with?"},
+    response:"We offer tree removal, trimming, stump grinding, and 24/7 storm cleanup. What do youneed help with?"},
 
   {keywords:["storm","fallen","emergency"],topic:"emergency",
     response:"We offer 24/7 storm cleanup. Did the tree fall on anything or block a driveway?"},
@@ -514,20 +510,19 @@ const rules=[
     response:"Hi there! How can we help with your trees today?"}
 ];
 
+// MEMORY HANDLER
 function handleMemory(msg){
   const m=msg.toLowerCase();
   const num=m.match(/\b\d+\b/);
 
   if(num && memory.lastTopic==="stumps"){
     memory.stumps = num[0];
-    // turn on estimate prompt mode
     estimatePromptActive = true;
     return `Got it — ${memory.stumps} stump(s). Need a quote?`;
   }
 
   if(num && memory.lastTopic==="trees"){
     memory.trees = num[0];
-    // turn on estimate prompt mode
     estimatePromptActive = true;
     return `Understood — ${memory.trees} tree(s). Need an estimate?`;
   }
@@ -562,7 +557,7 @@ function catchAll(){
   return "You can reach us at (704) 641-2888 — we're here 24/7.";
 }
 
-// SEND MESSAGE
+// MAIN SEND MESSAGE
 function sendMessage(){
   const msg=chatInput.value.trim();
   if(!msg) return;
@@ -570,12 +565,12 @@ function sendMessage(){
   userMsg(msg);
   chatInput.value="";
 
-  // First greeting question (services)
+  // First greeting question
   if(firstInteraction){
     if(handleFirstQuestion(msg)) return;
   }
 
-  // If we recently asked "Need an estimate/quote?" and they respond positively
+  // If bot asked "Need an estimate?" AND user replied positively
   if(estimatePromptActive && isAffirmative(msg)){
     botMsg(`Great! A team member will contact you shortly.<br><br>
       <div class='chat-cta' onclick="window.location.href='contact.html'">Get a Free Quote</div>`);
