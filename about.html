@@ -1,27 +1,174 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About Us | Bramos Tree Solution</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Tree Favicon -->
+<link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/808/808569.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
 <style>
-body{font-family:Arial;margin:20px;line-height:1.6;}
-h1{color:#0a5a0a;}
-a{color:#0a5a0a;text-decoration:none;font-weight:bold;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#0b0b0b;color:#fff;overflow-x:hidden;}
+
+/* HEADER */
+header{
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(8px);
+  padding:15px 0;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+.container{
+  width:92%;
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.logo{
+  font-size:1.8em;
+  font-weight:800;
+  color:#00ff64;
+  text-shadow:0 0 10px #00ff64;
+}
+nav ul{list-style:none;display:flex;gap:25px;}
+nav a{color:#fff;text-decoration:none;font-weight:500;transition:0.3s;}
+nav a:hover{color:#00ff64;text-shadow:0 0 10px #00ff64;}
+
+.hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;}
+.hamburger span{width:28px;height:3px;background:#00ff64;}
+
+/* PAGE HEADER */
+.page-header{
+  text-align:center;
+  padding:80px 0 40px 0;
+}
+.page-header h1{
+  font-size:2.8rem;
+  font-weight:800;
+  color:#00ff64;
+  text-shadow:0 0 15px #00ff64;
+  margin-bottom:15px;
+}
+.page-header p{
+  font-size:1.2rem;
+  opacity:0.85;
+}
+
+/* ABOUT SECTION */
+.about-section{
+  width:90%;
+  max-width:1100px;
+  margin:40px auto;
+  background:#111;
+  border-radius:15px;
+  padding:40px;
+  box-shadow:0 0 25px rgba(0,255,100,0.25);
+  animation:fadeInUp 1.5s ease;
+}
+.about-section h2{
+  color:#00ff64;
+  font-size:2rem;
+  margin-bottom:15px;
+  text-shadow:0 0 10px #00ff64;
+}
+.about-section p{
+  line-height:1.7;
+  font-size:1.1rem;
+  opacity:0.9;
+  margin-bottom:20px;
+}
+
+/* VALUES BOXES */
+.values{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:25px;
+  margin-top:30px;
+}
+.value-box{
+  background:#1a1a1a;
+  border:2px solid #00ff64;
+  border-radius:12px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 0 20px rgba(0,255,100,0.15);
+  transition:.3s;
+}
+.value-box:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px #00ff64;
+}
+.value-box h3{
+  color:#00ff64;
+  font-size:1.5rem;
+  margin-bottom:10px;
+}
+
+/* FOOTER */
+footer{
+  background:#111;
+  padding:25px 0;
+  text-align:center;
+  margin-top:60px;
+  border-top:1px solid #00ff64;
+}
+
+/* MOBILE */
+@media(max-width:800px){
+  .page-header h1{font-size:2rem;}
+  .about-section{padding:25px;}
+}
 </style>
 </head>
+
 <body>
 
-<h1>About Bramos Tree Solution</h1>
-<p>
-Bramos Tree Solution is a family-owned and fully insured tree company serving Charlotte, NC.  
-We specialize in tree removal, trimming, stump grinding, and emergency storm services.
-</p>
+<header>
+  <div class="container">
+    <div class="logo">BRAMOS TREE</div>
 
-<p>
-Our mission is simple: provide safe, fast, and affordable tree care for homeowners and businesses across the Charlotte area.
-</p>
+    <nav id="nav">
+      <ul>
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="about.html" style="color:#00ff64;">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="index.html#work">Our Work</a></li>
+        <li><a href="contact.html">Get Quote</a></li>
+      </ul>
+    </nav>
 
-<p><a href="index.html">← Back to Home</a></p>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
 
-</body>
-</html>
+<section class="page-header">
+  <h1>About Bramos Tree Solution</h1>
+  <p>Modern. Reliable. Fully Insured Tree Experts Serving Charlotte, NC.</p>
+</section>
+
+<div class="about-section">
+  <h2>Who We Are</h2>
+  <p>
+    Bramos Tree Solution is a young, energetic, forward-thinking tree service company based in Charlotte, NC.
+    We combine modern equipment, safe practices, and high-quality customer service to deliver fast and reliable work — every time.
+  </p>
+  <p>
+    Whether it’s tree removal, trimming, stump grinding, or emergency storm cleanup, our team is committed to
+    offering professional results at affordable prices. We are fully insured and proud to serve homeowners and
+    businesses throughout Charlotte and surrounding areas.
+  </p>
+
+  <h2>Why Choose Us</h2>
+  <div class="values">
+    <div class="value-box">
+      <h3>⚡ Fast Response</h3>
+      <p>Same-day and next-da
