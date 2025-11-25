@@ -349,7 +349,7 @@ function clearBadge(){
   chatBadge.style.display = "none";
 }
 
-// TIME GREETING (CORRECTED)
+// TIME GREETING (CORRECT RULES)
 function getGreeting(){
   const h = new Date().getHours();
 
@@ -360,13 +360,17 @@ function getGreeting(){
   return "Good evening!";
 }
 
-// AUTO EXPAND → MINIMIZE AFTER 1.5 SECONDS → SEND GREETING
-chatWidget.classList.remove('minimized');
-
+// WAIT 2 sec → OPEN 1.5 sec → MINIMIZE → SEND 2 GREETINGS
 setTimeout(() => {
-  chatWidget.classList.add('minimized');
-  sendInitialMessages();
-}, 1500);
+
+  chatWidget.classList.remove('minimized');
+
+  setTimeout(() => {
+    chatWidget.classList.add('minimized');
+    sendInitialMessages();
+  }, 1500);
+
+}, 2000);
 
 // USER MESSAGE
 function userMsg(text){
@@ -468,7 +472,7 @@ const rules=[
     response:"We offer 24/7 storm cleanup. Did the tree fall on anything or block a driveway?"},
 
   {keywords:["insured","insurance"],topic:"insurance",
-    response:"Yes — we are fully insured for residential and commercial projects."},
+    response:"Yes — we are fully insured."},
 
   {keywords:["area","location","service area","serve"],topic:"location",
     response:"We service Charlotte, Matthews, Mint Hill, Pineville, Concord, Harrisburg, and nearby areas."},
@@ -477,7 +481,7 @@ const rules=[
     response:"We’re available 24/7 for all tree work and storm emergencies."},
 
   {keywords:["schedule","day","tomorrow"],topic:"schedule",
-    response:"We’re flexible and can work around your schedule. What day works best?"},
+    response:"We can work around your schedule. What day works best?"},
 
   {keywords:["call","phone"],topic:"phone",
     response:"You can reach us anytime at (704) 641-2888."},
@@ -527,7 +531,7 @@ function catchAll(){
     return "I can help with removal, trimming, stump grinding, or storm cleanup. Tell me more.";
   if(catchAllCounter===2)
     return "If you'd rather talk to a real person, call anytime at (704) 641-2888.";
-  return "You can reach us at (704) 641-2888 — we're available 24/7.";
+  return "You can reach us at (704) 641-2888 — we're here 24/7.";
 }
 
 // SEND MESSAGE
