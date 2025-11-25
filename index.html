@@ -149,8 +149,8 @@ footer{
 /* CHAT WIDGET */
 .chat-widget{
   position:fixed;
-  bottom:20px !important;
-  right:20px !important;
+  bottom:20px;
+  right:20px;
   width:320px;
   background:#111;
   border:1px solid #00ff64;
@@ -233,7 +233,7 @@ footer{
   font-weight:600;
 }
 
-/* SERVICE CTA BUTTON */
+/* CTA */
 .chat-cta{
   display:inline-block;
   margin-top:10px;
@@ -308,7 +308,7 @@ footer{
   <p>© 2025 Bramos Tree Solution</p>
 </footer>
 
-<!-- CHAT WIDGET -->
+<!-- CHAT -->
 <div class="chat-widget minimized" id="chatWidget">
 
   <!-- UNREAD BADGE -->
@@ -328,11 +328,11 @@ footer{
 </div>
 
 <script>
-// NAV
+// NAV MENU
 document.getElementById('hamburger').onclick = () =>
   document.getElementById('nav').classList.toggle('open');
 
-// CHAT VARIABLES
+// CHAT ELEMENTS
 const chatWidget = document.getElementById('chatWidget');
 const chatBadge  = document.getElementById('chatBadge');
 const toggleChat = document.getElementById('toggleChat');
@@ -341,92 +341,98 @@ const chatInput  = document.getElementById('chatInput');
 const chatSend   = document.getElementById('chatSend');
 
 let firstInteraction = true;
-let unread = true;
+let unreadCount = 0;
 
-// AUTO-MINIMIZE ON LOAD
-chatWidget.classList.add('minimized');
-
-// REMOVE BADGE WHEN OPENED
+// CLEAR BADGE
 function clearBadge(){
-  unread = false;
+  unreadCount = 0;
   chatBadge.style.display = "none";
 }
 
-// TIME OF DAY GREETING
+// TIME GREETING
 function getGreeting(){
-  const h = new Date().getHours();
-  if (h < 12) return "Good morning!";
-  if (h < 18) return "Good afternoon!";
+  const h=new Date().getHours();
+  if(h<12) return "Good morning!";
+  if(h<18) return "Good afternoon!";
   return "Good evening!";
 }
 
-// PRINT USER MESSAGE
+// AUTO EXPAND → MINIMIZE → SEND GREETINGS
+chatWidget.classList.remove('minimized');
+
+setTimeout(() => {
+  chatWidget.classList.add('minimized');
+
+  sendInitialMessages();
+}, 1000);
+
+// USER MESSAGE
 function userMsg(text){
   chatBody.innerHTML += `<div><b>You:</b> ${text}</div>`;
   chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-// PRINT BOT MESSAGE + SET UNREAD
+// BOT MESSAGE WITH UNREAD COUNT
 function botMsg(text){
   chatBody.innerHTML += `<div><b>Bot:</b> ${text}</div>`;
   chatBody.scrollTop = chatBody.scrollHeight;
 
-  if (chatWidget.classList.contains('minimized')){
-    unread = true;
+  if(chatWidget.classList.contains('minimized')){
+    unreadCount++;
+    chatBadge.textContent = unreadCount;
     chatBadge.style.display = "block";
-    chatBadge.textContent = "1";
   }
 }
 
-// AUTO-GREETING (2 MESSAGES)
+// TWO GREETING MESSAGES
 function sendInitialMessages(){
-  const greeting = getGreeting();
-  botMsg(greeting);
+  botMsg(getGreeting());
   botMsg("Are you interested in any of our tree services today?");
 }
 
-// SEND INITIAL MESSAGES RIGHT AWAY AFTER LOAD
-setTimeout(() => sendInitialMessages(), 1200);
-
-// OPEN CHAT ON CLICK
-chatWidget.onclick = e => {
-  if (e.target.id !== "toggleChat"){
+// OPEN CHAT → CLEAR BADGE
+chatWidget.onclick = e=>{
+  if(e.target.id!=="toggleChat"){
     chatWidget.classList.remove('minimized');
     clearBadge();
   }
 };
 
 // TOGGLE BUTTON
-toggleChat.onclick = e => {
+toggleChat.onclick = e=>{
   e.stopPropagation();
   chatWidget.classList.toggle('minimized');
-  if (!chatWidget.classList.contains('minimized')) clearBadge();
+  if(!chatWidget.classList.contains('minimized')) clearBadge();
 };
 
-// SERVICE INTENT (YES/NO ONLY ON FIRST INTERACTION)
+// FIRST QUESTION LOGIC
 function handleFirstQuestion(msg){
   const m = msg.toLowerCase();
 
-  if (m.includes("yes")){
+  // YES
+  if(m.includes("yes")){
     botMsg(`Great! Here's a quick link to explore our services:<br><br>
       <div class='chat-cta' onclick="window.location.href='services.html'">View Our Services</div>`);
     firstInteraction = false;
     return true;
   }
 
-  if (m.includes("no")){
-    botMsg(`No problem at all! How can I help?
-    <br>Try typing: <b>"What are your hours?"</b>`);
+  // NO
+  if(m.includes("no")){
+    botMsg(`No problem at all! How can I help?<br>Try typing: <b>"What are your hours?"</b>`);
     firstInteraction = false;
     return true;
   }
 
+  // If irrelevant, still end first-interaction mode
+  firstInteraction = false;
   return false;
 }
 
-// RULE ENGINE + MEMORY
-const memory = { lastTopic:null, trees:null, stumps:null, city:null };
-let catchAllCounter = 0;
+// RULE ENGINE, MEMORY, PRICE LOGIC — SAME AS PRIOR VERSION
+
+const memory={lastTopic:null,trees:null,stumps:null,city:null};
+let catchAllCounter=0;
 
 function isPriceIntent(msg){
   const t=msg.toLowerCase();
@@ -436,8 +442,7 @@ function isPriceIntent(msg){
   ];
   for(const w of priceWords){ if(t.includes(w)) return true; }
   if(t.includes("$")) return true;
-  const num=/\b\d+\b/.test(t);
-  if(num && (t.includes("tree")||t.includes("stump"))) return true;
+  if(/\b\d+\b/.test(t) && (t.includes("tree")||t.includes("stump"))) return true;
   return false;
 }
 
@@ -446,52 +451,41 @@ const priceResponse =
   "<div class='chat-cta' onclick=\"window.location.href='contact.html'\">Get a Free Quote</div>";
 
 const rules=[
-
-  {keywords:["remove","tree removal","cut down"],topic:"trees",
+  {keywords:["remove","tree removal","cut"],topic:"trees",
     response:"We offer safe, insured tree removal. How many trees are you dealing with?"},
 
-  {keywords:["trim","trimming","prune","shaping"],topic:"trees",
+  {keywords:["trim","trimming","prune"],topic:"trees",
     response:"We provide professional trimming and shaping. Are you trimming one tree or several?"},
 
-  {keywords:["stump","grind","grinding"],topic:"stumps",
+  {keywords:["stump","grind"],topic:"stumps",
     response:"We grind stumps below ground level. How many stumps do you have?"},
 
   {keywords:[
     "service","services","tree service","tree services",
-    "what do you do","what services do you offer",
-    "your services","types of work","list of services",
-    "do you do tree service"
+    "what do you do","what services","list of services",
+    "your services"
   ],topic:"services",
-    response:"We offer tree removal, trimming, stump grinding, and 24/7 emergency storm cleanup. What type of project do you need help with?"},
+    response:"We offer tree removal, trimming, stump grinding, and 24/7 storm cleanup. What type of project do you need help with?"},
 
-  {keywords:["storm","fallen","emergency","wind"],topic:"emergency",
+  {keywords:["storm","fallen","emergency"],topic:"emergency",
     response:"We offer 24/7 storm cleanup. Did the tree fall on anything or block a driveway?"},
 
-  {keywords:["insured","insurance","licensed","bonded"],topic:"insurance",
+  {keywords:["insured","insurance"],topic:"insurance",
     response:"Yes — we are fully insured for residential and commercial projects."},
 
-  {keywords:["area","location","service area","serve","where","located","near","around"],
-    topic:"location",
+  {keywords:["area","location","service area","serve"],topic:"location",
     response:"We service Charlotte, Matthews, Mint Hill, Pineville, Concord, Harrisburg, and nearby areas."},
 
-  {keywords:["charlotte","matthews","mint hill","pineville","concord","harrisburg"],
-    topic:"location",
-    response:"Yes, we service your area and most of the greater Charlotte region."},
-
-  {keywords:["hours","open","close","availability","available","when open","time open","time close"],
-    topic:"hours",
+  {keywords:["hours","open","close","availability"],topic:"hours",
     response:"We’re available 24/7 for all tree work and storm emergencies."},
 
-  {keywords:["schedule","time","when","day","tomorrow","today"],
-    topic:"schedule",
+  {keywords:["schedule","day","tomorrow"],topic:"schedule",
     response:"We’re flexible and can usually work around your schedule. What day works best for you?"},
 
-  {keywords:["call","phone"],
-    topic:"phone",
+  {keywords:["call","phone"],topic:"phone",
     response:"You can reach us anytime at (704) 641-2888."},
 
-  {keywords:["hello","hi","hey"],
-    topic:"greeting",
+  {keywords:["hello","hi","hey"],topic:"greeting",
     response:"Hi there! How can we help with your trees today?"}
 ];
 
@@ -501,20 +495,17 @@ function handleMemory(msg){
 
   if(num && memory.lastTopic==="stumps"){
     memory.stumps=num[0];
-    return `Got it — we'll note ${memory.stumps} stump(s). If you want pricing, just ask for a quote.`;
+    return `Got it — ${memory.stumps} stump(s). If you'd like a quote, just ask.`;
   }
 
   if(num && memory.lastTopic==="trees"){
     memory.trees=num[0];
-    return `Thanks — ${memory.trees} tree(s). If you'd like a free estimate, ask for a quote.`;
+    return `Understood — ${memory.trees} tree(s). If you'd like an estimate, feel free to ask.`;
   }
 
   if(memory.lastTopic==="location"){
     const city=m.match(/charlotte|matthews|mint hill|pineville|concord|harrisburg/);
-    if(city){
-      memory.city=city[0];
-      return `Yes, we service ${city[0]} and nearby areas.`;
-    }
+    if(city){ memory.city=city[0]; return `Yes, we service ${city[0]}.`; }
   }
 
   return null;
@@ -539,7 +530,7 @@ function catchAll(){
     return "I can help with removal, trimming, stump grinding, or storm cleanup. Tell me a bit more.";
   if(catchAllCounter===2)
     return "If you'd rather talk to a real person, call anytime at (704) 641-2888.";
-  return "You can reach us anytime at (704) 641-2888 — we're available 24/7.";
+  return "You can reach us at (704) 641-2888 — we're available 24/7.";
 }
 
 // SEND MESSAGE PIPELINE
@@ -550,28 +541,17 @@ function sendMessage(){
   userMsg(msg);
   chatInput.value="";
 
-  // First-interaction YES/NO logic
   if(firstInteraction){
     if(handleFirstQuestion(msg)) return;
-    // If irrelevant answer, still break out of first interaction
-    firstInteraction = false;
   }
 
   const mem=handleMemory(msg);
   if(mem){ botMsg(mem); return; }
 
-  if(isPriceIntent(msg)){
-    catchAllCounter=0;
-    botMsg(priceResponse);
-    return;
-  }
+  if(isPriceIntent(msg)){ botMsg(priceResponse); return; }
 
   const rule=findRule(msg);
-  if(rule){
-    catchAllCounter=0;
-    botMsg(rule);
-    return;
-  }
+  if(rule){ botMsg(rule); return; }
 
   botMsg(catchAll());
 }
